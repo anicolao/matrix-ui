@@ -1,7 +1,3 @@
-Here is the design proposal in Markdown format, suitable for inclusion in your "Matrix UI" project.
-
-***
-
 ### Matrix UI: A Context-Aware Chat Client for Modern Workflows
 
 This document outlines a design proposal for a new Matrix chat client that is optimized for multi-project, multi-desktop workflows. The core principle of this design is to create a UI that is both highly aware of a user's real-time environment and non-intrusive, balancing the need for constant updates with the necessity of deep focus.
