@@ -30,3 +30,14 @@ This is the central navigation mechanism, designed for speed and power-user effi
     3.  Load the selected conversation into the window.
 
 This design creates a workflow that is fluid, intuitive, and tailored to the modern professional's need for both constant connection and periods of deep, uninterrupted focus.
+
+## Development
+
+To set up the development environment for Matrix UI:
+
+1. Install [Nix](https://nixos.org/download.html) with flakes enabled
+2. Clone this repository
+3. Run `nix develop` to enter the development shell
+4. Install pre-commit hooks with `pre-commit install`
+
+See [DEVELOPMENT.md](DEVELOPMENT.md) for detailed development instructions and workflow.
