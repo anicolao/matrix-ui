@@ -72,16 +72,14 @@
           # Rust toolchain
           rustToolchain
           
-          # Node.js for frontend development
-          nodejs_18
-          npm-update-package
+          # Bun for frontend development
+          bun
           
           # Tauri dependencies
           cargo-tauri
           
           # Code formatting and linting
-          nodePackages.prettier
-          nodePackages.eslint
+          biome
           
           # Pre-commit hooks
           pre-commit
@@ -122,15 +120,15 @@
           "rust-lint" = "cargo clippy -- -D warnings";
           
           # Frontend development
-          "fe-dev" = "npm run dev";
-          "fe-build" = "npm run build";
-          "fe-test" = "npm test";
-          "fe-lint" = "npm run lint";
-          "fe-format" = "npm run format";
+          "fe-dev" = "bun run dev";
+          "fe-build" = "bun run build";
+          "fe-test" = "bun run test";
+          "fe-lint" = "bun run lint";
+          "fe-format" = "bun run format";
           
           # Quality checks
-          "check-all" = "cargo fmt --check && cargo clippy -- -D warnings && cargo test && npm run lint && npm test";
-          "format-all" = "cargo fmt && npm run format";
+          "check-all" = "cargo fmt --check && cargo clippy -- -D warnings && cargo test && bun run ci";
+          "format-all" = "cargo fmt && bun run ci:fix";
           
           # Git helpers
           "git-clean-branches" = "git branch --merged | grep -v '\\*\\|main\\|master' | xargs -n 1 git branch -d";
@@ -151,8 +149,7 @@
             echo "======================================"
             echo ""
             echo "📦 Rust version: $(rustc --version)"
-            echo "📦 Node.js version: $(node --version)"
-            echo "📦 npm version: $(npm --version)"
+            echo "📦 Bun version: $(bun --version)"
             echo ""
             echo "🔧 Available commands:"
             echo "  tauri-dev       - Start Tauri development mode"
@@ -167,9 +164,8 @@
             echo "  pc-install      - Install pre-commit hooks"
             echo ""
             echo "💡 Quick start:"
-            echo "  1. Run 'pc-install' to set up pre-commit hooks"
-            echo "  2. Run 'npm install' to install frontend dependencies"
-            echo "  3. Run 'tauri-dev' to start development"
+            echo "  1. Run 'bun install' to install frontend dependencies"
+            echo "  2. Run 'bun run dev' to start development"
             echo ""
             
             # Set up environment variables for Tauri
@@ -185,6 +181,12 @@
             
             # Node.js configuration
             export NODE_OPTIONS="--max-old-space-size=4096"
+            
+            # Automatically install pre-commit hooks
+            if [ -f .pre-commit-config.yaml ] && [ ! -f .git/hooks/pre-commit ]; then
+              echo "🔧 Installing pre-commit hooks automatically..."
+              pre-commit install
+            fi
             
             # Pre-commit configuration
             export PRE_COMMIT_COLOR=always
@@ -237,8 +239,8 @@ EOF
             # Check if package.json exists, if not provide helpful message
             if [ ! -f package.json ]; then
               echo "⚠️  No package.json found. You may need to initialize the frontend:"
-              echo "   npm init -y"
-              echo "   npm install # Install frontend dependencies"
+              echo "   bun init -y"
+              echo "   bun install # Install frontend dependencies"
             fi
             
             # Check if Cargo.toml exists, if not provide helpful message  
@@ -273,7 +275,7 @@ EOF
               echo "Formatting Rust code..."
               ${rustToolchain}/bin/cargo fmt
               echo "Formatting frontend code..."
-              ${pkgs.nodePackages.prettier}/bin/prettier --write "src/**/*.{js,ts,html,css,json}"
+              ${pkgs.biome}/bin/biome format --write "src/**/*.{js,ts,html,css,json,svelte}"
               echo "All code formatted!"
             '';
           };
@@ -287,8 +289,8 @@ EOF
               ${rustToolchain}/bin/cargo test
 
               echo "Running frontend checks..."
-              npm run lint || echo "Frontend linting not configured yet"
-              npm test || echo "Frontend tests not configured yet"
+              bun run ci || echo "Frontend linting not configured yet"
+              bun run test || echo "Frontend tests not configured yet"
               
               echo "All checks passed!"
             '';

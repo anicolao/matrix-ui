@@ -6,7 +6,8 @@ This document explains how to set up and develop the Matrix UI chat client using
 
 Matrix UI is a context-aware Matrix chat client built with:
 - **Backend:** Rust + Tauri framework
-- **Frontend:** HTML/CSS/JavaScript (web technologies)
+- **Frontend:** TypeScript + Svelte component framework
+- **Tooling:** Biome for linting and formatting
 - **Platform Support:** macOS and Linux
 - **Development Environment:** Nix flakes for reproducible setup
 
@@ -33,44 +34,12 @@ Matrix UI is a context-aware Matrix chat client built with:
    This command will:
    - Install all required development tools
    - Set up the Rust toolchain with the correct version
-   - Install Node.js and npm for frontend development
+   - Install Bun for frontend development
    - Install Tauri CLI and platform-specific dependencies
    - Configure environment variables and shell aliases
-
-3. **Install pre-commit hooks (recommended):**
-   ```bash
-   pre-commit install
-   ```
+   - Automatically install pre-commit hooks
 
 That's it! You now have a complete development environment ready for Matrix UI development.
-
-### Alternative Setup (without Nix)
-
-If you prefer not to use Nix, you can use the provided Makefile for basic development tasks:
-
-```bash
-# Check what tools are available
-make env-info
-
-# Install dependencies manually (after installing Rust and Node.js)
-make install-deps
-
-# See all available commands
-make help
-```
-
-**Note:** The Nix approach is strongly recommended as it provides a complete, reproducible environment with all dependencies properly configured.
-
-### Testing the Environment
-
-After entering the Nix development shell, you can verify everything is working correctly:
-
-```bash
-# Run the development environment test
-./test-dev-env.sh
-```
-
-This script will verify that all required tools are available and properly configured.
 
 ## Development Tools Included
 
@@ -78,7 +47,7 @@ The Nix development shell provides:
 
 ### Core Development Tools
 - **Rust Toolchain:** rustc, cargo, rustfmt, clippy
-- **Node.js:** Node.js 18.x, npm, npx
+- **Bun:** Latest version for TypeScript/JavaScript runtime and package management
 - **Tauri CLI:** For desktop app development and building
 - **Git:** Version control with helpful aliases
 
@@ -89,30 +58,31 @@ The Nix development shell provides:
 
 ### Code Quality Tools
 - **Rust:** rustfmt (formatting), clippy (linting)
-- **JavaScript:** Prettier (formatting), ESLint (linting)
+- **TypeScript/JavaScript:** Biome (formatting and linting)
 - **Pre-commit:** Automated code quality checks
 
 ### Testing Tools
 - **Rust:** Built-in cargo test framework
-- **Node.js:** Jest or similar testing frameworks
+- **TypeScript:** Bun's built-in testing framework
 - **Integration:** End-to-end testing capabilities
 
 ## Development Workflow
 
-### 1. Frontend Development
+The development workflow has been simplified to use package.json scripts:
 
-Start the web development server:
 ```bash
-npm run dev
+bun run dev      # start development servers and launch the application with hot reload
+bun run ci       # run linter and formatter checks
+bun run ci:fix   # automatically fix linter and formatter issues
+bun run test     # run all tests for rust and typescript code
+bun run test:watch # run all tests repeatedly watching for changes
 ```
 
-This will start a local development server (typically on http://localhost:3000) with hot reloading for rapid frontend development.
+### 1. Starting Development
 
-### 2. Backend Development with Tauri
-
-Start Tauri in development mode:
+Start the development environment:
 ```bash
-cargo tauri dev
+bun run dev
 ```
 
 This command will:
@@ -120,27 +90,28 @@ This command will:
 - Start the frontend development server
 - Open the desktop application with hot reloading
 
-### 3. Full Application Testing
+### 2. Code Quality Checks
 
-Build the complete application:
+Run linting and formatting checks:
 ```bash
-# Development build
-cargo tauri build --debug
-
-# Production build
-cargo tauri build
+bun run ci
 ```
 
-### 4. Platform-Specific Testing
-
-Test on different architectures:
+Automatically fix formatting and linting issues:
 ```bash
-# macOS (if on macOS)
-cargo tauri build --target x86_64-apple-darwin
-cargo tauri build --target aarch64-apple-darwin
+bun run ci:fix
+```
 
-# Linux (if on Linux)
-cargo tauri build --target x86_64-unknown-linux-gnu
+### 3. Testing
+
+Run all tests:
+```bash
+bun run test
+```
+
+Run tests in watch mode for continuous feedback:
+```bash
+bun run test:watch
 ```
 
 ## Code Quality and Pre-commit Hooks
@@ -153,9 +124,9 @@ The development environment includes pre-commit hooks that automatically run qua
 - **Tests:** `cargo test` - Runs all Rust unit and integration tests
 
 ### Frontend Code Quality
-- **Format Check:** `prettier --check` - Ensures consistent JavaScript/CSS/HTML formatting
-- **Linting:** `eslint` - Catches JavaScript errors and enforces coding standards
-- **Tests:** `npm test` - Runs frontend test suite
+- **Format Check:** `biome check` - Ensures consistent TypeScript/JavaScript code formatting
+- **Linting:** `biome check` - Catches TypeScript/JavaScript errors and enforces coding standards
+- **Tests:** `bun test` - Runs frontend test suite
 
 ### General Repository Health
 - **Commit Message Format:** Ensures commit messages follow conventional format
@@ -177,14 +148,14 @@ cargo clippy
 # Rust tests
 cargo test
 
-# Frontend formatting
-npm run format
+# Frontend checks
+bun run ci
 
-# Frontend linting
-npm run lint
+# Frontend formatting and linting fixes
+bun run ci:fix
 
 # Frontend tests
-npm test
+bun run test
 
 # Run all pre-commit hooks manually
 pre-commit run --all-files
@@ -202,39 +173,14 @@ matrix-ui/
 │   ├── Cargo.toml
 │   ├── src/
 │   └── tauri.conf.json
-├── src/                   # Frontend source
-│   ├── index.html
-│   ├── main.js
-│   └── styles.css
-├── package.json           # Node.js dependencies
+├── src/                   # Frontend source (TypeScript + Svelte)
+│   ├── app.svelte
+│   ├── main.ts
+│   └── app.css
+├── package.json           # Bun dependencies and scripts
+├── biome.json            # Biome configuration
 └── .pre-commit-config.yaml # Pre-commit configuration
 ```
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Tauri build fails on Linux:**
-   - Ensure you're in the Nix development shell: `nix develop`
-   - Install additional system dependencies if needed
-
-2. **Pre-commit hooks fail:**
-   - Run `pre-commit clean` and then `pre-commit install`
-   - Check that all tools are available in the Nix shell
-
-3. **Node modules issues:**
-   - Delete `node_modules` and run `npm install` in the Nix shell
-
-4. **Rust compilation errors:**
-   - Ensure you're using the correct Rust version: `rustc --version`
-   - Clean the build cache: `cargo clean`
-
-### Getting Help
-
-1. Check if you're in the correct development environment: `echo $NIX_SHELL_PACKAGES`
-2. Verify tool versions match the expected ones
-3. Consult the [Tauri documentation](https://tauri.app/) for framework-specific issues
-4. Review the `IMPLEMENTATION_SKETCH.md` for architectural decisions
 
 ## Contributing
 
@@ -247,7 +193,7 @@ The pre-commit hooks will automatically ensure code quality, but it's recommende
 
 ```bash
 # Run all checks before committing
-cargo test && npm test && cargo clippy && cargo fmt --check
+bun run test && bun run ci
 ```
 
 ## Advanced Usage

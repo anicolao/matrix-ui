@@ -43,30 +43,23 @@ repos:
         types: [rust]
         pass_filenames: false
 
-  # Frontend code quality (when package.json exists)
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.0.3
-    hooks:
-      - id: prettier
-        types_or: [javascript, jsx, ts, tsx, json, css, html, markdown, yaml]
-        exclude: |
-          (?x)^(
-            package-lock\.json|
-            \.cargo/.*|
-            target/.*
-          )$
+      - id: bun-test
+        name: bun test
+        entry: bun test
+        language: system
+        types_or: [javascript, jsx, ts, tsx]
+        pass_filenames: false
 
-  # ESLint for JavaScript/TypeScript (when .eslintrc exists)
-  - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v8.50.0
+  # Frontend code quality with Biome
+  - repo: local
     hooks:
-      - id: eslint
-        files: \.(js|jsx|ts|tsx)$
-        types: [file]
-        additional_dependencies:
-          - eslint@8.50.0
-          - '@typescript-eslint/parser@6.7.0'
-          - '@typescript-eslint/eslint-plugin@6.7.0'
+      - id: biome-check
+        name: biome check
+        entry: biome check
+        args: [--apply]
+        language: system
+        types_or: [javascript, jsx, ts, tsx, json]
+        pass_filenames: false
 
   # Commit message format validation
   - repo: https://github.com/compilerla/conventional-pre-commit

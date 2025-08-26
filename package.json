@@ -1,0 +1,23 @@
+{
+  "name": "matrix-ui",
+  "version": "0.1.0",
+  "description": "A context-aware Matrix chat client",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run tauri dev",
+    "ci": "biome check .",
+    "ci:fix": "biome check --apply .",
+    "test": "bun test && cargo test",
+    "test:watch": "bun test --watch"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.4.1",
+    "typescript": "^5.3.3",
+    "svelte": "^4.2.8",
+    "@sveltejs/vite-plugin-svelte": "^3.0.1",
+    "vite": "^5.0.10"
+  },
+  "dependencies": {
+    "svelte": "^4.2.8"
+  }
+}
