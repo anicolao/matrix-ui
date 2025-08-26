@@ -1,0 +1,49 @@
+# Rust
+/target
+/Cargo.lock
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Tauri
+/src-tauri/target
+/src-tauri/Cargo.lock
+
+# Build outputs
+/dist/bundle
+/bundle
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+.tmp/
+temp/
+
+# Local configuration
+.env
+.env.local
+.env.*.local
+
+# Matrix client data (when implemented)
+matrix-data/
+credentials/

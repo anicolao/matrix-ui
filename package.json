@@ -1,0 +1,35 @@
+{
+  "name": "matrix-ui",
+  "version": "0.1.0",
+  "description": "A context-aware Matrix chat client for modern workflows",
+  "main": "dist/index.html",
+  "scripts": {
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
+    "tauri:build:debug": "tauri build --debug",
+    "dev": "npm run tauri:dev",
+    "build": "npm run tauri:build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "matrix",
+    "chat",
+    "desktop",
+    "tauri",
+    "context-aware",
+    "multi-desktop"
+  ],
+  "author": "Matrix UI Team",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anicolao/matrix-ui.git"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
