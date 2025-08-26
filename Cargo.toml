@@ -1,0 +1,41 @@
+[package]
+name = "matrix-ui"
+version = "0.1.0"
+description = "A context-aware Matrix chat client for modern workflows"
+authors = ["Matrix UI Team"]
+license = "GPL-3.0"
+repository = "https://github.com/anicolao/matrix-ui"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["macos-private-api"] }
+tauri-plugin-shell = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+# matrix-sdk = "0.7"  # Commented out for initial scaffolding
+
+# Platform-specific dependencies will be added as needed
+[target.'cfg(target_os = "macos")'.dependencies]
+# macOS-specific crates for system integration
+# cocoa = "0.25"
+# core-graphics = "0.23"
+# objc = "0.2"
+
+[target.'cfg(target_os = "linux")'.dependencies]
+# Linux-specific crates for system integration  
+# x11 = { version = "2.21", features = ["xlib"] }
+# libwnck = "0.1" # May need custom bindings
+
+[[bin]]
+name = "matrix-ui"
+path = "src/main.rs"
+
+[features]
+# This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]

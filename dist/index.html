@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix UI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Menu Bar Carousel Component -->
+        <div id="menu-bar-carousel" class="menu-bar">
+            <div class="avatar-carousel">
+                <div class="avatar-item" data-room-id="room1">
+                    <img src="https://via.placeholder.com/32" alt="Avatar 1" class="avatar-img">
+                    <div class="notification-badge" style="display: none;">1</div>
+                </div>
+                <div class="avatar-item" data-room-id="room2">
+                    <img src="https://via.placeholder.com/32" alt="Avatar 2" class="avatar-img">
+                </div>
+                <div class="avatar-item" data-room-id="room3">
+                    <img src="https://via.placeholder.com/32" alt="Avatar 3" class="avatar-img">
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Chat Window -->
+        <div id="chat-window" class="chat-window">
+            <div class="chat-header">
+                <h2 id="current-room-name">Select a room</h2>
+                <div class="room-status" id="room-status">No room selected</div>
+            </div>
+            
+            <div class="messages-container" id="messages">
+                <div class="message">
+                    <div class="message-sender">Welcome</div>
+                    <div class="message-content">Select a room to start chatting</div>
+                    <div class="message-time">now</div>
+                </div>
+            </div>
+            
+            <div class="input-container">
+                <input 
+                    type="text" 
+                    id="message-input" 
+                    placeholder="Type a message..." 
+                    disabled
+                >
+                <button id="send-button" disabled>Send</button>
+            </div>
+        </div>
+
+        <!-- Ephemeral Chat Switcher (initially hidden) -->
+        <div id="chat-switcher" class="chat-switcher" style="display: none;">
+            <div class="switcher-content">
+                <input 
+                    type="text" 
+                    id="switcher-search" 
+                    placeholder="Search chats..."
+                    class="switcher-search"
+                >
+                <div class="switcher-scope">
+                    <span id="scope-indicator">Local Scope</span>
+                </div>
+                <div class="filtered-results" id="filtered-results">
+                    <!-- Dynamically populated search results -->
+                </div>
+                <div class="switcher-help">
+                    Press Caps Lock again for global search • Enter to select • Esc to cancel
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
