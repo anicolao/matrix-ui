@@ -44,6 +44,34 @@ Matrix UI is a context-aware Matrix chat client built with:
 
 That's it! You now have a complete development environment ready for Matrix UI development.
 
+### Alternative Setup (without Nix)
+
+If you prefer not to use Nix, you can use the provided Makefile for basic development tasks:
+
+```bash
+# Check what tools are available
+make env-info
+
+# Install dependencies manually (after installing Rust and Node.js)
+make install-deps
+
+# See all available commands
+make help
+```
+
+**Note:** The Nix approach is strongly recommended as it provides a complete, reproducible environment with all dependencies properly configured.
+
+### Testing the Environment
+
+After entering the Nix development shell, you can verify everything is working correctly:
+
+```bash
+# Run the development environment test
+./test-dev-env.sh
+```
+
+This script will verify that all required tools are available and properly configured.
+
 ## Development Tools Included
 
 The Nix development shell provides:
